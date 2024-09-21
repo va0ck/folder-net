@@ -1,0 +1,9 @@
+[package]
+name = "va0ck/folder-net"
+description = "Server/Client communication module organized & called by with folder names."
+version = "0.0.3"
+license = "MIT"
+authors = ["Va0ck"]
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+[dependencies]

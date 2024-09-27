@@ -1,16 +1,21 @@
 local ReadOnlyTable = require(script.Parent.ReadOnlyTable)
 
+--[[
+    You should be able to change the string to what you want,
+    the variable names though need to stay the same unless if you want to rework everything.
+]]--
+
 return ReadOnlyTable({
     SHARED_FOLDER_NAME = "SharedNet";
     SERVER_BINDABLES_FOLDER_NAME = "FolderNet_Server";
 
-    REMOTE_EVENT_NAME = "RemoteEvent";
-    REMOTE_FUNCTION_NAME = "RemoteFunction";
-    UNRELIABLE_REMOTE_EVENT_NAME = "UnreliableRemoteEvent";
+    REMOTE_EVENTS_FOLDER_NAME = "RemoteEvents";
+    REMOTE_FUNCTIONS_FOLDER_NAME = "RemoteFunctions";
+    UNRELIABLE_REMOTE_EVENTS_FOLDER_NAME = "UnreliableRemoteEvents";
 
-    CLIENT_BINDABLE_EVENT_NAME = "BindableEvent";
-    CLIENT_BINDABLE_FUNCTION_NAME = "BindableFunction";
+    CLIENT_BINDABLES_EVENT_FOLDER_NAME = "BindableEvents";
+    CLIENT_BINDABLES_FUNCTION_FOLDER_NAME = "BindableFunctions";
 
-    SERVER_BINDABLE_EVENT_NAME = "BindableEvent";
-    SERVER_BINDABLE_FUNCTION_NAME = "BindableFunction";
+    SERVER_BINDABLES_EVENT_FOLDER_NAME = "BindableEvents";
+    SERVER_BINDABLES_FUNCTION_FOLDER_NAME = "BindableFunctions";
 })

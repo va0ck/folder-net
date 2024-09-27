@@ -46,30 +46,32 @@ end
 --[[Main Entry]]
 local RemoteFunctionWrapper = {}
 
-function RemoteFunctionWrapper:Connect(folderName: string) :Connection
-	assert(type(folderName) == "string", "Bad name")
+function RemoteFunctionWrapper:Connect(folderName: string, functionName: string) :Connection
+	assert(type(folderName) == "string", "Bad folder name")
+	assert(type(functionName) == "string", "Bad function name")
 	
 	local networkDirectory: NetworkDirectory = getNetworkDirectory()
-	local connection: Connection = networkDirectory[folderName]
+	local connection: Connection = networkDirectory[folderName..functionName]
 
-	local remoteInstance: Instance = GetRemoteFunction(folderName)
+	local remoteInstance: Instance = GetRemoteFunction(folderName, functionName)
 
 	connection = Connection.new(remoteInstance)
 	connection._destroyedBindableEvent.Event:Once(function()
-	networkDirectory[folderName] = nil
+	networkDirectory[folderName..functionName] = nil
 	    warn(`Network connection to {"RemoteFunction"} '{folderName}' has been disconnected`)
 	end)
 
-	networkDirectory[folderName] = connection
+	networkDirectory[folderName..functionName] = connection
 
 	return connection
 end
 
-function RemoteFunctionWrapper:Disconnect(folderName: string)
-	assert(type(folderName) == "string", "Bad name")
+function RemoteFunctionWrapper:Disconnect(folderName: string, functionName: string)
+	assert(type(folderName) == "string", "Bad folder name")
+	assert(type(functionName) == "string", "Bad function name")
 
 	local networkDirectory: NetworkDirectory = getNetworkDirectory()
-	local connection: Connection = networkDirectory[folderName]
+	local connection: Connection = networkDirectory[folderName..functionName]
 
 	if connection ~= nil then
 		connection:Destroy()
@@ -122,6 +124,6 @@ function Connection.new(instance: Instance): Connection
 end
 
 --[[Access everything.]]
-return function (folderName: string)
-	return RemoteFunctionWrapper:Connect(folderName)
+return function (folderName: string, functionName: string)
+	return RemoteFunctionWrapper:Connect(folderName, functionName)
 end

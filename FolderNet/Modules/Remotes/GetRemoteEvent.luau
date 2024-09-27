@@ -2,9 +2,11 @@ local RunService = game:GetService("RunService")
 
 local ResourceConstants = require(script.Parent.Parent.ResourceConstants)
 if RunService:IsServer() then
-    return function (folderName)
-        assert(type(folderName) == "string", "Bad name")
+    return function (folderName: string, eventName: string)
+        assert(type(folderName) == "string", "Bad folderName")
+		assert(type(eventName) == "string", "Bad eventName")
 
+		--Check if main Shared_Folder exists, if not creates.
         local storage = script.Parent.Parent.Parent:FindFirstChild(ResourceConstants.SHARED_FOLDER_NAME)
 		if not storage then
 			storage = Instance.new("Folder")
@@ -13,6 +15,7 @@ if RunService:IsServer() then
 			storage.Parent = script.Parent.Parent.Parent
 		end
 
+		--Checks if folderName is already created.
         local folder = storage:FindFirstChild(folderName)
         if not folder then
             folder = Instance.new("Folder")
@@ -21,23 +24,38 @@ if RunService:IsServer() then
 			folder.Parent = storage
         end
 
-        local event = folder:FindFirstChild(ResourceConstants.REMOTE_EVENT_NAME)
+		--To setup multiple events being able to be created in the same folderName.
+		local folder2 = folder:FindFirstChild(ResourceConstants.REMOTE_EVENTS_FOLDER_NAME)
+		if not folder2 then
+			folder2 = Instance.new("Folder")
+			folder2.Name = ResourceConstants.REMOTE_EVENTS_FOLDER_NAME
+			folder2.Archivable = false
+			folder2.Parent = folder
+		end
+
+		--Find if the eventName already exists in folderName.
+        local event = folder2:FindFirstChild(eventName)
 		if event then
 			return event
 		end
 
         event = Instance.new("RemoteEvent")
-		event.Name = ResourceConstants.REMOTE_EVENT_NAME
+		event.Name = eventName
 		event.Archivable = false
-		event.Parent = folder
+		event.Parent = folder2
 
 		return event
     end
 elseif  RunService:IsClient() then
-    return function (folderName)
-        assert(type(folderName) == "string", "Bad name")
+    return function (folderName: string, eventName: string)
+        assert(type(folderName) == "string", "Bad folderName")
+		assert(type(eventName) == "string", "Bad eventName")
 
-        return script.Parent.Parent.Parent:FindFirstChild(ResourceConstants.SHARED_FOLDER_NAME):WaitForChild(folderName):WaitForChild(ResourceConstants.REMOTE_EVENT_NAME)
+        return script.Parent.Parent.Parent
+			:FindFirstChild(ResourceConstants.SHARED_FOLDER_NAME)
+			:WaitForChild(folderName)
+			:WaitForChild(ResourceConstants.REMOTE_EVENTS_FOLDER_NAME)
+			:WaitForChild(eventName)
     end
 else
     error("[GetRemoteEvent] - Unknown RunService state")

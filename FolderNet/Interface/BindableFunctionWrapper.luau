@@ -41,32 +41,34 @@ end
 --[[Main Entry]]
 local BindableFunctionWrapper = {}
 
-function BindableFunctionWrapper:Connect(folderName: string) :Connection
-	assert(type(folderName) == "string", "Bad name")
+function BindableFunctionWrapper:Connect(folderName: string, functionName: string) :Connection
+	assert(type(folderName) == "string", "Bad folder name")
+	assert(type(functionName) == "string", "Bad function name")
 	
 	local networkDirectory: NetworkDirectory = getNetworkDirectory()
-	local connection: Connection = networkDirectory[folderName]
+	local connection: Connection = networkDirectory[folderName..functionName]
 
 	if connection == nil then
-		local bindableInstance: Instance = GetBindableFunction(folderName)
+		local bindableInstance: Instance = GetBindableFunction(folderName, functionName)
 
 		connection = Connection.new(bindableInstance)
 		connection._destroyedBindableEvent.Event:Once(function()
 			print(`Network connection to {"BindableFunction"} '{folderName}' has been disconnected`)
-			networkDirectory[folderName] = nil
+			networkDirectory[folderName..functionName] = nil
 		end)
 
-		networkDirectory[folderName] = connection
+		networkDirectory[folderName..functionName] = connection
 	end
 
 	return connection
 end
 
-function BindableFunctionWrapper:Disconnect(folderName: string)
-	assert(type(folderName) == "string", "Bad name")
+function BindableFunctionWrapper:Disconnect(folderName: string, functionName: string)
+	assert(type(folderName) == "string", "Bad folder name")
+	assert(type(functionName) == "string", "Bad function name")
 
 	local networkDirectory: NetworkDirectory = getNetworkDirectory()
-	local connection: Connection = networkDirectory[folderName]
+	local connection: Connection = networkDirectory[folderName..functionName]
 
 	if connection ~= nil then
 		connection:Destroy()
@@ -109,6 +111,6 @@ function Connection.new(instance: Instance): Connection
 end
 
 --[[Access everything.]]
-return function (folderName: string)
-	return BindableFunctionWrapper:Connect(folderName)
+return function (folderName: string, functionName: string)
+	return BindableFunctionWrapper:Connect(folderName, functionName)
 end

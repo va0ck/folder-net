@@ -5,22 +5,20 @@
         @Uiscript/Network
 
     How this works!
-        Call the name of the folder with a Event/Function,
-            -> the Event/Function is created if doesn't exist,
-            -> Connect/Fire/Invoke/Bind afterwards! ✨
-        The name of the Event/Function shouldn't matter, it should only be the folder name!
+        Call the name of the folder and the event/function name!
+            If you only want to use the folderName only, then use FolderNet v0.0.4.
 
     Setting:
         Change Modules/ResourceConstants for different Folder/Instance names.
 
     Example:
         Client:
-            FolderNet.GetRemoteEvent("ShopUi") <-- Waits for RemoteEvent.
-            FolderNet.GetBindableEvent("ShopUi") <-- Returns a BindableEvent in ReplicatedStorage.
+            FolderNet.GetRemoteEvent("ShopUi", "BuyItem") <-- Waits for RemoteEvent.
+            FolderNet.GetBindableEvent("ShopUi", "GuiTween") <-- Returns a BindableEvent in ReplicatedStorage.
 
         Server:
-            FolderNet.GetRemoteEvent("ShopUi") <-- Returns RemoteEvent in ReplicatedStorage.
-            FolderNet.GetBindableEvent("ShopUi") <-- Returns BindableEvent in ServerStorage.
+            FolderNet.GetRemoteEvent("ShopUi", "BuyItem") <-- Returns RemoteEvent in ReplicatedStorage.
+            FolderNet.GetBindableEvent("ShopUi", "ItemBoughtFunnel") <-- Returns BindableEvent in ServerStorage.
 
         Tree [Output]:
             ReplicatedStorage:
@@ -28,14 +26,15 @@
                     Module
                         Folders
                             ShopUi [Folder]:
-                                RemoteEvent
-                                BindableEvent
-                                BindableFunction
+                                RemoteEvent [Folder]
+                                    BuyItem
+                                BindableEvent [Folder]
+                                    GuiTween
             ServerStorage:
                 ServerBindables [Folder]:
                     ShopUi [Folder]:
-                        BindableEvent
-                    
+                        BindableEvent [Folder]
+                            ItemBoughtFunnel
 ]]--
 
 local BindableEventWrapper = require(script.Interface.BindableEventWrapper)

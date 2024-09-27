@@ -53,30 +53,32 @@ end
 --[[Main Entry]]
 local RemoteEventWrapper = {}
 
-function RemoteEventWrapper:Connect(folderName: string) :Connection
-	assert(type(folderName) == "string", "Bad name")
+function RemoteEventWrapper:Connect(folderName: string, eventName: string) :Connection
+	assert(type(folderName) == "string", "Bad folder name")
+	assert(type(eventName) == "string", "Bad event name")
 	
 	local networkDirectory: NetworkDirectory = getNetworkDirectory()
-	local connection: Connection = networkDirectory[folderName]
+	local connection: Connection = networkDirectory[folderName..eventName]
 
-	local remoteInstance: Instance = GetRemoteEvent(folderName)
+	local remoteInstance: Instance = GetRemoteEvent(folderName, eventName)
 
 	connection = Connection.new(remoteInstance)
 	connection._destroyedBindableEvent.Event:Once(function()
-	networkDirectory[folderName] = nil
+	networkDirectory[folderName..eventName] = nil
 	    warn(`Network connection to {"RemoteEvent"} '{folderName}' has been disconnected`)
 	end)
 
-	networkDirectory[folderName] = connection
+	networkDirectory[folderName..eventName] = connection
 
 	return connection
 end
 
-function RemoteEventWrapper:Disconnect(folderName: string)
-	assert(type(folderName) == "string", "Bad name")
+function RemoteEventWrapper:Disconnect(folderName: string, eventName: string)
+	assert(type(folderName) == "string", "Bad folder name")
+	assert(type(eventName) == "string", "Bad event name")
 
 	local networkDirectory: NetworkDirectory = getNetworkDirectory()
-	local connection: Connection = networkDirectory[folderName]
+	local connection: Connection = networkDirectory[folderName..eventName]
 
 	if connection ~= nil then
 		connection:Destroy()
@@ -157,6 +159,6 @@ function Connection.new(instance: Instance): Connection
 end
 
 --[[Access everything.]]
-return function (folderName: string)
-	return RemoteEventWrapper:Connect(folderName)
+return function (folderName: string, eventName: string)
+	return RemoteEventWrapper:Connect(folderName, eventName)
 end

@@ -56,13 +56,14 @@ end
 --[[Main Entry]]
 local UnreliableRemoteEventWrapper = {}
 
-function UnreliableRemoteEventWrapper:Connect(folderName: string) :Connection
-	assert(type(folderName) == "string", "Bad name")
+function UnreliableRemoteEventWrapper:Connect(folderName: string, eventName: string) :Connection
+	assert(type(folderName) == "string", "Bad folder name")
+	assert(type(eventName) == "string", "Bad event name")
 	
 	local networkDirectory: NetworkDirectory = getNetworkDirectory()
-	local connection: Connection = networkDirectory[folderName]
+	local connection: Connection = networkDirectory[folderName..eventName]
 
-	local remoteInstance: Instance = GetUnreliableRemoteEvent(folderName)
+	local remoteInstance: Instance = GetUnreliableRemoteEvent(folderName, eventName)
 
 	connection = Connection.new(remoteInstance)
 	connection._destroyedBindableEvent.Event:Once(function()
@@ -75,11 +76,12 @@ function UnreliableRemoteEventWrapper:Connect(folderName: string) :Connection
 	return connection
 end
 
-function UnreliableRemoteEventWrapper:Disconnect(folderName: string)
-	assert(type(folderName) == "string", "Bad name")
+function UnreliableRemoteEventWrapper:Disconnect(folderName: string, eventName: string)
+	assert(type(folderName) == "string", "Bad folder name")
+	assert(type(eventName) == "string", "Bad event name")
 
 	local networkDirectory: NetworkDirectory = getNetworkDirectory()
-	local connection: Connection = networkDirectory[folderName]
+	local connection: Connection = networkDirectory[folderName..eventName]
 
 	if connection ~= nil then
 		connection:Destroy()
@@ -160,6 +162,6 @@ function Connection.new(instance: Instance): Connection
 end
 
 --[[Access everything.]]
-return function (folderName: string)
-	return UnreliableRemoteEventWrapper:Connect(folderName)
+return function (folderName: string, eventName: string)
+	return UnreliableRemoteEventWrapper:Connect(folderName, eventName)
 end

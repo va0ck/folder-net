@@ -4,9 +4,11 @@ local ServerStorage = game:GetService("ServerStorage")
 local ResourceConstants = require(script.Parent.Parent.ResourceConstants)
 
 if RunService:IsServer() then
-    return function (folderName)
-        assert(type(folderName) == "string", "Bad name")
+    return function (folderName: string, eventName: string)
+        assert(type(folderName) == "string", "Bad folder name")
+        assert(type(eventName) == "string", "Bad event name")
 
+        --Creates the main folder to store server bindables.
         local storage = ServerStorage:FindFirstChild(ResourceConstants.SERVER_BINDABLES_FOLDER_NAME)
 		if not storage then
 			storage = Instance.new("Folder")
@@ -15,6 +17,7 @@ if RunService:IsServer() then
 			storage.Parent = ServerStorage
 		end
 
+        --Main first argument.
         local folder = storage:FindFirstChild(folderName)
         if not folder then
             folder = Instance.new("Folder")
@@ -23,23 +26,34 @@ if RunService:IsServer() then
 			folder.Parent = storage
         end
 
-        local event = folder:FindFirstChild(ResourceConstants.SERVER_BINDABLE_EVENT_NAME)
+        --To support multiple eventBindables in one folder.
+        local folder2 = folder:FindFirstChild(ResourceConstants.SERVER_BINDABLES_EVENT_FOLDER_NAME)
+        if not folder2 then
+            folder2 = Instance.new("Folder")
+            folder2.Name = ResourceConstants.SERVER_BINDABLES_EVENT_FOLDER_NAME
+            folder2.Archivable = false
+            folder2.Parent = folder
+        end
+
+        --Second argument to grab the eventBindable.
+        local event = folder2:FindFirstChild(eventName)
         if event then
             return event
         end
 
         event = Instance.new("BindableEvent")
-		event.Name = ResourceConstants.SERVER_BINDABLE_EVENT_NAME
+		event.Name = eventName
 		event.Archivable = false
-		event.Parent = folder
+		event.Parent = folder2
 
         return event
     end
 
 elseif RunService:IsClient() then
 
-    return function (folderName)
-        assert(type(folderName) == "string", "Bad name")
+    return function (folderName: string, eventName: string)
+        assert(type(folderName) == "string", "Bad folder name")
+        assert(type(eventName) == "string", "Bad event name")
 
         local storage = script.Parent.Parent.Parent:FindFirstChild(ResourceConstants.SHARED_FOLDER_NAME)
 		if not storage then
@@ -49,6 +63,7 @@ elseif RunService:IsClient() then
 			storage.Parent = script.Parent.Parent.Parent
 		end
 
+        --Grabs the first argument folder.
         local folder = storage:FindFirstChild(folderName)
         if not folder then
             folder = Instance.new("Folder")
@@ -57,15 +72,25 @@ elseif RunService:IsClient() then
 			folder.Parent = storage
         end
 
-        local event = folder:FindFirstChild(ResourceConstants.CLIENT_BINDABLE_EVENT_NAME)
+        --Setup folder to store multiple bindable client events.
+        local folder2 = folder:FindFirstChild(ResourceConstants.CLIENT_BINDABLES_EVENT_FOLDER_NAME)
+        if not folder2 then
+            folder2 = Instance.new("Folder")
+            folder2.Name = ResourceConstants.CLIENT_BINDABLES_EVENT_FOLDER_NAME
+            folder2.Archivable = false
+            folder2.Parent = folder
+        end
+
+        --Second argument to return client eventBindable.
+        local event = folder2:FindFirstChild(eventName)
         if event then
             return event
         end
 
         event = Instance.new("BindableEvent")
-		event.Name = ResourceConstants.CLIENT_BINDABLE_EVENT_NAME
+		event.Name = eventName
 		event.Archivable = false
-		event.Parent = folder
+		event.Parent = folder2
 
         return event
     end

@@ -2,9 +2,11 @@ local RunService = game:GetService("RunService")
 
 local ResourceConstants = require(script.Parent.Parent.ResourceConstants)
 if RunService:IsServer() then
-    return function (folderName)
-        assert(type(folderName) == "string", "Bad name")
+    return function (folderName: string, eventName: string)
+        assert(type(folderName) == "string", "Bad folderName")
+		assert(type(eventName) == "string", "Bad eventName")
 
+		--Makes sure shared folder exists.
         local storage = script.Parent.Parent.Parent:FindFirstChild(ResourceConstants.SHARED_FOLDER_NAME)
 		if not storage then
 			storage = Instance.new("Folder")
@@ -13,6 +15,7 @@ if RunService:IsServer() then
 			storage.Parent = script.Parent.Parent.Parent
 		end
 
+		--Makes sure folderName exists.
         local folder = storage:FindFirstChild(folderName)
         if not folder then
             folder = Instance.new("Folder")
@@ -21,23 +24,38 @@ if RunService:IsServer() then
 			folder.Parent = storage
         end
 
-        local event = folder:FindFirstChild(ResourceConstants.UNRELIABLE_REMOTE_EVENT_NAME)
+		--Setups up a new folder to hold multiple unreliable events.
+		local folder2 = folder:FindFirstChild(ResourceConstants.UNRELIABLE_REMOTE_EVENTS_FOLDER_NAME)
+		if not folder2 then
+			folder2 = Instance.new("Folder")
+			folder2.Name = ResourceConstants.UNRELIABLE_REMOTE_EVENTS_FOLDER_NAME
+			folder2.Archivable = false
+			folder2.Parent = folder
+		end
+
+		--Returns event if it exists.
+        local event = folder:FindFirstChild(eventName)
 		if event then
 			return event
 		end
 
         event = Instance.new("UnreliableRemoteEvent")
-		event.Name = ResourceConstants.UNRELIABLE_REMOTE_EVENT_NAME
+		event.Name = eventName
 		event.Archivable = false
-		event.Parent = folder
+		event.Parent = folder2
 
 		return event
     end
 elseif  RunService:IsClient() then
-    return function (folderName)
-        assert(type(folderName) == "string", "Bad name")
+    return function (folderName: string, eventName: string)
+		assert(type(folderName) == "string", "Bad folderName")
+		assert(type(eventName) == "string", "Bad eventName")
 
-        return script.Parent.Parent.Parent:FindFirstChild(ResourceConstants.SHARED_FOLDER_NAME):WaitForChild(folderName):WaitForChild(ResourceConstants.UNRELIABLE_REMOTE_EVENT_NAME)
+        return script.Parent.Parent.Parent
+			:FindFirstChild(ResourceConstants.SHARED_FOLDER_NAME)
+			:WaitForChild(folderName)
+			:WaitForChild(ResourceConstants.UNRELIABLE_REMOTE_EVENTS_FOLDER_NAME)
+			:WaitForChild(eventName)
     end
 else
     error("[GetUnreliableRemoteEvent] - Unknown RunService state")

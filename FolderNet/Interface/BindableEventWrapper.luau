@@ -44,32 +44,34 @@ end
 --[[Main Entry]]
 local BindableEventWrapper = {}
 
-function BindableEventWrapper:Connect(folderName: string) :Connection
-	assert(type(folderName) == "string", "Bad name")
+function BindableEventWrapper:Connect(folderName: string, eventName: string) :Connection
+	assert(type(folderName) == "string", "Bad folder name")
+	assert(type(eventName) == "string", "Bad event name")
 	
 	local networkDirectory: NetworkDirectory = getNetworkDirectory()
-	local connection: Connection = networkDirectory[folderName]
+	local connection: Connection = networkDirectory[folderName..eventName]
 
 	if connection == nil then
-		local bindableInstance: Instance = GetBindableEvent(folderName)
+		local bindableInstance: Instance = GetBindableEvent(folderName, eventName)
 
 		connection = Connection.new(bindableInstance)
 		connection._destroyedBindableEvent.Event:Once(function()
 			print(`Network connection to {"BindableEvent"} '{folderName}' has been disconnected`)
-			networkDirectory[folderName] = nil
+			networkDirectory[folderName..eventName] = nil
 		end)
 
-		networkDirectory[folderName] = connection
+		networkDirectory[folderName..eventName] = connection
 	end
 
 	return connection
 end
 
-function BindableEventWrapper:Disconnect(folderName: string)
-	assert(type(folderName) == "string", "Bad name")
+function BindableEventWrapper:Disconnect(folderName: string, eventName: string)
+	assert(type(folderName) == "string", "Bad folder name")
+	assert(type(eventName) == "string", "Bad event name")
 
 	local networkDirectory: NetworkDirectory = getNetworkDirectory()
-	local connection: Connection = networkDirectory[folderName]
+	local connection: Connection = networkDirectory[folderName..eventName]
 
 	if connection ~= nil then
 		connection:Destroy()
@@ -124,6 +126,6 @@ function Connection.new(instance: Instance): Connection
 end
 
 --[[Access everything.]]
-return function (folderName: string)
-	return BindableEventWrapper:Connect(folderName)
+return function (folderName: string, eventName: string)
+	return BindableEventWrapper:Connect(folderName, eventName)
 end

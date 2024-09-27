@@ -1,7 +1,7 @@
 [package]
 name = "va0ck/folder-net"
-description = "Server/Client communication module organized & called by with folder names."
-version = "0.0.4"
+description = "Server/Client communication module organized with folder names & event/function names."
+version = "0.1.0"
 license = "MIT"
 authors = ["Va0ck"]
 registry = "https://github.com/UpliftGames/wally-index"

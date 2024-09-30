@@ -57,8 +57,8 @@ function RemoteFunctionWrapper:Connect(folderName: string, functionName: string)
 
 	connection = Connection.new(remoteInstance)
 	connection._destroyedBindableEvent.Event:Once(function()
-	networkDirectory[folderName..functionName] = nil
-	    warn(`Network connection to {"RemoteFunction"} '{folderName}' has been disconnected`)
+		networkDirectory[folderName..functionName] = nil
+	    print(`Network connection to RemoteFunction '{folderName}'/'{functionName}' has been disconnected`)
 	end)
 
 	networkDirectory[folderName..functionName] = connection

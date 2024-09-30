@@ -53,8 +53,8 @@ function BindableFunctionWrapper:Connect(folderName: string, functionName: strin
 
 		connection = Connection.new(bindableInstance)
 		connection._destroyedBindableEvent.Event:Once(function()
-			print(`Network connection to {"BindableFunction"} '{folderName}' has been disconnected`)
 			networkDirectory[folderName..functionName] = nil
+			print(`Network connection to BindableFunction '{folderName}'/'{functionName}' has been disconnected`)
 		end)
 
 		networkDirectory[folderName..functionName] = connection

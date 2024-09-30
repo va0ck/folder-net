@@ -56,8 +56,8 @@ function BindableEventWrapper:Connect(folderName: string, eventName: string) :Co
 
 		connection = Connection.new(bindableInstance)
 		connection._destroyedBindableEvent.Event:Once(function()
-			print(`Network connection to {"BindableEvent"} '{folderName}' has been disconnected`)
 			networkDirectory[folderName..eventName] = nil
+			print(`Network connection to BindableEvent '{folderName}'/'{eventName}' has been disconnected`)
 		end)
 
 		networkDirectory[folderName..eventName] = connection

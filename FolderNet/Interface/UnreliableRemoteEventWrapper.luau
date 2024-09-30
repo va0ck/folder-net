@@ -67,8 +67,8 @@ function UnreliableRemoteEventWrapper:Connect(folderName: string, eventName: str
 
 	connection = Connection.new(remoteInstance)
 	connection._destroyedBindableEvent.Event:Once(function()
-	networkDirectory[folderName..eventName] = nil
-	    warn(`Network connection to {"UnreliableRemoteEvent"} '{folderName}' has been disconnected`)
+		networkDirectory[folderName..eventName] = nil
+	    print(`Network connection to UnreliableRemoteEvent '{folderName}'/'{eventName}' has been disconnected`)
 	end)
 
 	networkDirectory[folderName..eventName] = connection

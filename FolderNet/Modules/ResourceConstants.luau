@@ -2,7 +2,7 @@ local ReadOnlyTable = require(script.Parent.ReadOnlyTable)
 
 --[[
     You should be able to change the string to what you want,
-    the variable names though need to stay the same unless if you want to rework everything.
+    the variable names [not string value] though needs to stay the same unless if you want to rework everything.
 ]]--
 
 return ReadOnlyTable({
@@ -18,4 +18,8 @@ return ReadOnlyTable({
 
     SERVER_BINDABLES_EVENT_FOLDER_NAME = "BindableEvents";
     SERVER_BINDABLES_FUNCTION_FOLDER_NAME = "BindableFunctions";
+
+    MAX_FOLDERWAIT = 10,
+    MAX_INSTANCEFOLDERWAIT = 10,
+    MAX_INSTANCEWAIT = 10
 })

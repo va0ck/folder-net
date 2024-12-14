@@ -1,52 +1,50 @@
 --[[
-    Credits:
-        @Quenty/Remoting
-        @Quenty/Table
-        @Uiscript/Network
+    Orginzation module for networking.
 
-    How this works!
-        Call the name of the folder and the event/function name!
-            If you only want to use the folderName only, then use FolderNet v0.0.4.
-
-    Setting:
-        Change Modules/ResourceConstants for different Folder/Instance names.
-
-    Example:
-        Client:
-            FolderNet.GetRemoteEvent("ShopUi", "BuyItem") <-- Waits for RemoteEvent.
-            FolderNet.GetBindableEvent("ShopUi", "GuiTween") <-- Returns a BindableEvent in ReplicatedStorage.
-
-        Server:
-            FolderNet.GetRemoteEvent("ShopUi", "BuyItem") <-- Returns RemoteEvent in ReplicatedStorage.
-            FolderNet.GetBindableEvent("ShopUi", "ItemBoughtFunnel") <-- Returns BindableEvent in ServerStorage.
-
-        Tree [Output]:
-            ReplicatedStorage:
-                Shared
-                    Module
-                        Folders
-                            ShopUi [Folder]:
-                                RemoteEvent [Folder]
-                                    BuyItem
-                                BindableEvent [Folder]
-                                    GuiTween
-            ServerStorage:
-                ServerBindables [Folder]:
-                    ShopUi [Folder]:
-                        BindableEvent [Folder]
-                            ItemBoughtFunnel
+    Credits [Modules I've ported over.]:
+        @Quenty/Remoting [General layout to create instances. (Modules/Bindables & Modules/Remotes)]
+        @Quenty/Table [Alternative to table.freeze. (Modules/ResourceConstants)]
 ]]--
 
-local BindableEventWrapper = require(script.Interface.BindableEventWrapper)
-local BindableFunctionWrapper = require(script.Interface.BindableFunctionWrapper)
-local RemoteEventWrapper = require(script.Interface.RemoteEventWrapper)
-local RemoteFunctionWrapper = require(script.Interface.RemoteFunctionWrapper)
-local UnreliableRemoteEvent = require(script.Interface.UnreliableRemoteEventWrapper)
+local BindableEventInstance = require(script.Modules.Bindables.GetBindableEvent)
+local BindableFunctionInstance = require(script.Modules.Bindables.GetBindableFunction)
+local RemoteEventInstance = require(script.Modules.Remotes.GetRemoteEvent)
+local RemoteFunctionInstance = require(script.Modules.Remotes.GetRemoteFunction)
+local UnreliableRemoteEventInstance = require(script.Modules.Remotes.GetUnreliableRemoteEvent)
 
 return {
-    GetBindableEvent = BindableEventWrapper,
-    GetBindableFunction = BindableFunctionWrapper,
-    GetRemoteEvent = RemoteEventWrapper,
-    GetRemoteFunction = RemoteFunctionWrapper,
-    GetUnreliableRemoteEvent = UnreliableRemoteEvent
+    GetBindableEvent = function(folderName: string, eventName: string) :BindableEvent
+        assert(type(folderName) == "string", "Bad folder name")
+	    assert(type(eventName) == "string", "Bad event name")
+
+        return BindableEventInstance(folderName, eventName)
+    end,
+
+    GetBindableFunction = function(folderName: string, functionName: string) :BindableFunction
+        assert(type(folderName) == "string", "Bad folder name")
+	    assert(type(functionName) == "string", "Bad function name")
+
+        return BindableFunctionInstance(folderName, functionName)
+    end,
+
+    GetRemoteEvent = function(folderName: string, eventName: string) :RemoteEvent
+        assert(type(folderName) == "string", "Bad folder name")
+	    assert(type(eventName) == "string", "Bad event name")
+
+        return RemoteEventInstance(folderName, eventName)
+    end,
+
+    GetRemoteFunction = function(folderName: string, functionName: string) :RemoteFunction
+        assert(type(folderName) == "string", "Bad folder name")
+	    assert(type(functionName) == "string", "Bad function name")
+        
+        return RemoteFunctionInstance(folderName, functionName)
+    end,
+
+    GetUnreliableRemoteEvent =  function(folderName: string, eventName: string) :UnreliableRemoteEvent
+        assert(type(folderName) == "string", "Bad folder name")
+	    assert(type(eventName) == "string", "Bad event name")
+
+        return UnreliableRemoteEventInstance(folderName, eventName)
+    end
 }

@@ -18,7 +18,7 @@ hero:
 
 features:
   - title: Type Checking
-    details: Get typechecking for Remotes/Bindables in IDEs.
+    details: Get type checking for Remotes/Bindables in IDEs.
   - title: Vanilla Instance
     details: Returns a vanilla Remote/Bindable instance instead of custom methods.
   - title: Organization

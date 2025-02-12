@@ -1,9 +1,12 @@
 [package]
 name = "va0ck/folder-net"
-description = "Remotes/Bindables folder names & event/bindables names organization."
-version = "1.0.0"
+description = "Roblox Remotes & Bindables organization for IDEs."
+version = "1.0.1"
 license = "MIT"
 authors = ["Quenty/Remoting", "Quenty/Table"]
 registry = "https://github.com/UpliftGames/wally-index"
+homepage = "https://va0ck.com/folder-net/"
+repository = "https://github.com/va0ck/folder-net"
+exclude = ["package.json", "package-lock.json", ".github", "docs", "node_modules", "aftman.toml", ".gitignore", "sourcemap.json"]
 realm = "shared"
 [dependencies]

@@ -17,7 +17,7 @@ features:
   - title: Type Checking
     details: Get typechecking for Remotes/Bindables in IDEs.
   - title: Vanilla Instance
-    details: Returns a vanilla Remote/Bindable instance instead of custom signal.
+    details: Returns a vanilla Remote/Bindable instance instead of custom methods.
   - title: Organization
     details: Able to organize all your Remotes/Bindables with FolderName and RemoteName!
 ---

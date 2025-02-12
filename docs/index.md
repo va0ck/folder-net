@@ -4,7 +4,7 @@ layout: home
 
 hero:
   name: "Folder-Net"
-  tagline: Roblox Remotes & Bindables for IDEs.
+  tagline: Roblox Remotes & Bindables for IDEs. 
   actions:
     - theme: brand
       text: Documentation
@@ -12,6 +12,9 @@ hero:
     - theme: alt
       text: Github
       link: https://github.com/va0ck/folder-net
+    - theme: alt
+      text: Wally
+      link: https://wally.run/package/va0ck/folder-net
 
 features:
   - title: Type Checking

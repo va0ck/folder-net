@@ -2,14 +2,11 @@
 outline: deep
 ---
 
-# Slight disclosure.
-::: info
+# Information
+These all return a Remote/Bindable instance.
+::: tip
 Folder-Net is intended to be used in a Framework like CrusherFire module loader. 
 :::
-##
-
-# Methods
-These all return a Remote/Bindable instance.
 
 ## Bindables
 

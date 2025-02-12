@@ -53,9 +53,9 @@ elseif  RunService:IsClient() then
 
         return script.Parent.Parent.Parent
 			:FindFirstChild(ResourceConstants.SHARED_FOLDER_NAME)
-			:WaitForChild(folderName, ResourceConstants.MAX_FOLDERWAIT)
-			:WaitForChild(ResourceConstants.REMOTE_EVENTS_FOLDER_NAME, ResourceConstants.MAX_INSTANCEFOLDERWAIT)
-			:WaitForChild(eventName, ResourceConstants.MAX_INSTANCEWAIT)
+			:WaitForChild(folderName)
+			:WaitForChild(ResourceConstants.REMOTE_EVENTS_FOLDER_NAME)
+			:WaitForChild(eventName)
     end
 else
     error("[GetRemoteEvent] - Unknown RunService state")

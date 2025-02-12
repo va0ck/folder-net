@@ -54,9 +54,9 @@ elseif  RunService:IsClient() then
 
         return script.Parent.Parent.Parent
 			:FindFirstChild(ResourceConstants.SHARED_FOLDER_NAME)
-			:WaitForChild(folderName, ResourceConstants.MAX_FOLDERWAIT)
-			:WaitForChild(ResourceConstants.REMOTE_FUNCTIONS_FOLDER_NAME, ResourceConstants.MAX_INSTANCEFOLDERWAIT)
-			:WaitForChild(functionName, ResourceConstants.MAX_INSTANCEWAIT)
+			:WaitForChild(folderName)
+			:WaitForChild(ResourceConstants.REMOTE_FUNCTIONS_FOLDER_NAME)
+			:WaitForChild(functionName)
     end
 else
     error("[GetRemoteFunction] - Unknown RunService state")

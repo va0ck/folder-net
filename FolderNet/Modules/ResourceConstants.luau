@@ -18,8 +18,4 @@ return ReadOnlyTable({
 
     SERVER_BINDABLES_EVENT_FOLDER_NAME = "BindableEvents";
     SERVER_BINDABLES_FUNCTION_FOLDER_NAME = "BindableFunctions";
-
-    MAX_FOLDERWAIT = 10,
-    MAX_INSTANCEFOLDERWAIT = 10,
-    MAX_INSTANCEWAIT = 10
 })

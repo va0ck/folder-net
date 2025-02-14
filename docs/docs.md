@@ -30,7 +30,7 @@ local NewBindableFunction = FolderNet.GetBindableFunction(folderName, functionNa
 
 ## Remotes
 ::: warning
-Remotes called on the client will wait until the server calls the same function!
+Remotes called on the client will wait until the server calls the same function with same parameters!
 This may yeild then with WaitForChild and will fail!
 :::
 
